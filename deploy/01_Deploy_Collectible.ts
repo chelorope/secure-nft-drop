@@ -19,6 +19,7 @@ const deployCollectible: DeployFunction = async ({
     from: deployer,
     args: [],
     log: true,
+    waitConfirmations: 5,
   });
 
   log("Contract deployed on address:", collectible.address);
@@ -30,7 +31,7 @@ const deployCollectible: DeployFunction = async ({
       }.etherscan.io/address/${collectible.address}`
     );
     log("Verifying contract....");
-    await sleep(30); // Wait for etherscan to list the contract
+    await sleep(10); // Wait for etherscan to list the contract
     try {
       await run("verify:verify", {
         address: collectible.address,
@@ -41,7 +42,7 @@ const deployCollectible: DeployFunction = async ({
       log(error.message);
       log("The contract couldn't be verified yet");
       log("You can try later, running:");
-      log(`npx hardhat run verify-etherscan --network ${network.name}`);
+      log(`npx hardhat verify-etherscan --network ${network.name}`);
     }
   }
   log("----------------------------------------------------");
