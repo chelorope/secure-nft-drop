@@ -2,27 +2,50 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 import "hardhat/console.sol";
 
-contract Collectible is ERC721, AccessControl {
+contract Collectible is ERC721URIStorage, AccessControl {
+    using SafeMath for uint256;
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-    bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
 
-    constructor() public ERC721("Jam3Collectible", "JAM3") {
-        // Grant the contract deployer the default admin role: it will be able
-        // to grant and revoke any roles
+    uint256 public constant MAX_TOKENS = 2;
+
+    struct TokenData {
+        uint256 id;
+        string metadataUrl;
+    }
+    uint256 public totalSupply;
+
+    constructor() ERC721("Jam3Collectible", "JAM3") {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        totalSupply = 0;
     }
 
-    function mint(address to, uint256 amount) public {
-        require(hasRole(MINTER_ROLE, msg.sender), "Caller is not a minter");
-        _mint(to, amount);
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        virtual
+        override(ERC721, AccessControl)
+        returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
     }
 
-    function burn(address from, uint256 amount) public {
-        require(hasRole(BURNER_ROLE, msg.sender), "Caller is not a burner");
-        _burn(from, amount);
+    function mint(TokenData[] memory _tokensData) public onlyRole(MINTER_ROLE) {
+        require(
+            totalSupply.add(_tokensData.length) <= MAX_TOKENS,
+            "Purchase would exceed max supply"
+        );
+
+        for (uint256 i = 0; i < _tokensData.length; i++) {
+            if (totalSupply < MAX_TOKENS) {
+                _safeMint(msg.sender, _tokensData[i].id);
+                _setTokenURI(_tokensData[i].id, _tokensData[i].metadataUrl);
+                totalSupply = totalSupply.add(1);
+            }
+        }
     }
 }

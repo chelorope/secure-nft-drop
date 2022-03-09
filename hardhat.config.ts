@@ -14,6 +14,7 @@ import "./tasks/accounts";
 import "./tasks/contracts";
 import "./tasks/balance";
 import "./tasks/verify-etherscan";
+import "./tasks/pin-tokens-metadata";
 
 dotenv.config();
 
@@ -29,7 +30,7 @@ const {
 const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
   solidity: {
-    compilers: [{ version: "0.8.0" }],
+    compilers: [{ version: "0.8.0" }, { version: "0.8.1" }],
   },
   networks: {
     rinkeby: {
