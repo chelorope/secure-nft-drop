@@ -15,6 +15,7 @@ import "./tasks/contracts";
 import "./tasks/balance";
 import "./tasks/verify-etherscan";
 import "./tasks/pin-tokens-metadata";
+import "./tasks/pin-tokens-metadata-folder";
 
 dotenv.config();
 
@@ -25,12 +26,17 @@ const {
   POLYGON_MAINNET_RPC_URL,
   GANACHE_MNEMONIC,
   ETHERSCAN_API_KEY,
+  POLYGONSCAN_API_KEY,
 } = process.env;
 
 const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
   solidity: {
-    compilers: [{ version: "0.8.0" }, { version: "0.8.1" }],
+    compilers: [
+      { version: "0.8.0" },
+      { version: "0.8.1" },
+      { version: "0.8.4" },
+    ],
   },
   networks: {
     rinkeby: {

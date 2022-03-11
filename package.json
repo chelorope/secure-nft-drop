@@ -24,6 +24,7 @@
     "@typescript-eslint/parser": "^4.33.0",
     "chai": "^4.3.6",
     "dotenv": "^10.0.0",
+    "erc721a": "^3.0.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-standard": "^16.0.3",
@@ -47,6 +48,7 @@
   "dependencies": {
     "@openzeppelin/contracts": "^4.5.0",
     "@rarible/tokens": "^0.7.0",
+    "files-from-path": "^0.2.4",
     "mime": "^3.0.0",
     "nft.storage": "^6.0.2"
   }

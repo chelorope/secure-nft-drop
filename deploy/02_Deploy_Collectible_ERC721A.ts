@@ -13,14 +13,15 @@ const deployCollectible: DeployFunction = async ({
   const { deploy, log } = deployments;
   const { deployer } = await getNamedAccounts();
   const chainId = await getChainId();
+
+  log("Deploying contract from: ", deployer);
+
   const baseURI = await fs.promises.readFile(
     "./metadata/open-art/baseURI.txt",
     "utf8"
   );
 
-  log("Deploying contract from: ", deployer);
-
-  const collectible = await deploy("Collectible", {
+  const collectible = await deploy("CollectibleERC721A", {
     from: deployer,
     args: [baseURI, 25],
     log: true,
@@ -40,7 +41,7 @@ const deployCollectible: DeployFunction = async ({
     try {
       await run("verify:verify", {
         address: collectible.address,
-        constructorArguments: [baseURI],
+        constructorArguments: [baseURI, 25],
         network: network.name,
       });
     } catch (error: any) {
@@ -54,4 +55,4 @@ const deployCollectible: DeployFunction = async ({
 };
 
 export default deployCollectible;
-deployCollectible.tags = ["all", "erc721"];
+deployCollectible.tags = ["all", "erc721a"];

@@ -4,6 +4,9 @@ import { NFTStorage, File } from "nft.storage";
 import mime from "mime";
 import path from "path";
 
+const FILES_PATH = "./files";
+const METADATA_PATH = "./metadata";
+
 async function fileFromPath(filePath: string) {
   const content = await fs.promises.readFile(filePath);
   const type = mime.getType(filePath) || undefined;
@@ -22,10 +25,15 @@ async function storeNFT(imagePath: string, name: string, description: string) {
   });
 }
 
-task("pin-tokens-metadata", "Generates NFTs metadata manifest").setAction(
-  async () => {
+task("pin-tokens-metadata", "Generates NFTs metadata manifest")
+  .addParam("collection", "Collection's folder name")
+  .setAction(async (taskArgs) => {
+    const { collection } = taskArgs;
     const metadata = JSON.parse(
-      await fs.promises.readFile("./metadata/tokens-metadata.json", "utf8")
+      await fs.promises.readFile(
+        `${METADATA_PATH}/${collection}/tokens-metadata.json`,
+        "utf8"
+      )
     );
     const metadataManifest = await Promise.all(
       metadata.map(
@@ -41,17 +49,20 @@ task("pin-tokens-metadata", "Generates NFTs metadata manifest").setAction(
           description: string;
         }) => {
           return {
-            metadataUrl: (await storeNFT(`./files/${file}`, name, description))
-              .url,
+            metadataUrl: (
+              await storeNFT(
+                `${FILES_PATH}/${collection}/${file}`,
+                name,
+                description
+              )
+            ).url,
             id,
           };
         }
       )
     );
-
     await fs.promises.writeFile(
-      "./metadata/metadata-manifest.json",
+      `${METADATA_PATH}/${collection}/metadata-manifest.json`,
       JSON.stringify(metadataManifest)
     );
-  }
-);
+  });

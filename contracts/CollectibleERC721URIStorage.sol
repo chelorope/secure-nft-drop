@@ -3,23 +3,23 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 import "hardhat/console.sol";
 
-contract Collectible is ERC721, AccessControl {
+contract CollectibleERC721URIStorage is ERC721URIStorage, AccessControl {
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-    uint256 public totalSupply;
     uint256 public maxSupply;
 
-    string private _baseURIValue = "";
+    struct TokenData {
+        uint256 id;
+        string metadataUrl;
+    }
+    uint256 public totalSupply;
 
-    constructor(string memory baseURI, uint256 maxTokens)
-        ERC721("Open Art", "OPART")
-    {
-        _baseURIValue = baseURI;
+    constructor(uint256 maxTokens) ERC721("Open Art", "OPART") {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        totalSupply = 0;
         maxSupply = maxTokens;
     }
 
@@ -33,24 +33,16 @@ contract Collectible is ERC721, AccessControl {
         return super.supportsInterface(interfaceId);
     }
 
-    function _baseURI() internal view override returns (string memory) {
-        return _baseURIValue;
-    }
-
-    function setBaseURI(string memory baseURI) external {
-        _baseURIValue = baseURI;
-    }
-
-    function mint(uint256 quantity) public onlyRole(MINTER_ROLE) {
+    function mint(TokenData[] memory _tokensData) public onlyRole(MINTER_ROLE) {
         require(
-            totalSupply + quantity <= maxSupply,
+            totalSupply + _tokensData.length <= maxSupply,
             "Purchase would exceed max supply"
         );
 
-        for (uint256 i = 0; i < quantity; i++) {
-            uint256 tokenId = totalSupply;
+        for (uint256 i = 0; i < _tokensData.length; i++) {
             if (totalSupply < maxSupply) {
-                _safeMint(msg.sender, tokenId);
+                _safeMint(msg.sender, _tokensData[i].id);
+                _setTokenURI(_tokensData[i].id, _tokensData[i].metadataUrl);
                 totalSupply = totalSupply + 1;
             }
         }

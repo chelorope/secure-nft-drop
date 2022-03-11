@@ -3,9 +3,9 @@ import fs from "fs";
 
 const main = async () => {
   const { deployer } = await getNamedAccounts();
-  const Collectible = await deployments.get("Collectible");
+  const Collectible = await deployments.get("CollectibleERC721A");
   const collectible = await ethers.getContractAt(
-    "Collectible",
+    "CollectibleERC721A",
     Collectible.address
   );
   try {
@@ -16,10 +16,13 @@ const main = async () => {
     );
     await roleTx.wait(1);
 
-    const metadata = JSON.parse(
-      await fs.promises.readFile("./metadata/metadata-manifest.json", "utf8")
-    );
-    const creationTx = await collectible.mint(metadata);
+    // const metadata = JSON.parse(
+    //   await fs.promises.readFile(
+    //     "./metadata/open-art/metadata-manifest.json",
+    //     "utf8"
+    //   )
+    // );
+    const creationTx = await collectible.mint(1);
     await creationTx.wait(1);
     console.log("Total Supply:", await collectible.totalSupply());
   } catch (error: any) {

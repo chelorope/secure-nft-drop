@@ -1,0 +1,152 @@
+[
+  {
+    "id": 1,
+    "file": "1.jpeg",
+    "name": "Starry Night",
+    "description": "Thomas"
+  },
+  {
+    "id": 2,
+    "file": "2.jpeg",
+    "name": "The Bedroom",
+    "description": "Van Gogh"
+  },
+  {
+    "id": 3,
+    "file": "3.jpeg",
+    "name": "Curve",
+    "description": "Atsuko"
+  },
+  {
+    "id": 4,
+    "file": "4.jpeg",
+    "name": "Paris Street",
+    "description": "Caillebotte"
+  },
+  {
+    "id": 5,
+    "file": "5.jpeg",
+    "name": "Nightlife",
+    "description": "Motley"
+  },
+  {
+    "id": 6,
+    "file": "6.jpeg",
+    "name": "Unde the Wave",
+    "description": "Hokusai"
+  },
+  {
+    "id": 7,
+    "file": "7.jpeg",
+    "name": "The Old Guitarrist",
+    "description": "Picasso"
+  },
+  {
+    "id": 8,
+    "file": "8.jpeg",
+    "name": "Two Sisters",
+    "description": "Renoir"
+  },
+  {
+    "id": 9,
+    "file": "9.jpeg",
+    "name": "Self Portrait",
+    "description": "Van Gogh"
+  },
+  {
+    "id": 10,
+    "file": "10.jpeg",
+    "name": "American Gothic",
+    "description": "Wood"
+  },
+  {
+    "id": 11,
+    "file": "11.jpeg",
+    "name": "The Child's Bath",
+    "description": "Cassatt"
+  },
+  {
+    "id": 12,
+    "file": "12.jpeg",
+    "name": "Arrival of the Normandy Train",
+    "description": "Monet"
+  },
+  {
+    "id": 13,
+    "file": "13.jpeg",
+    "name": "Mao",
+    "description": "Warhol"
+  },
+  {
+    "id": 14,
+    "file": "14.jpeg",
+    "name": "Figure with Meat",
+    "description": "Bacon"
+  },
+  {
+    "id": 15,
+    "file": "15.jpeg",
+    "name": "The Rock",
+    "description": "Blume"
+  },
+  {
+    "id": 16,
+    "file": "16.jpeg",
+    "name": "Kanhweiler",
+    "description": "Picasso"
+  },
+  {
+    "id": 17,
+    "file": "17.jpeg",
+    "name": "Saint George",
+    "description": "Martorell"
+  },
+  {
+    "id": 18,
+    "file": "18.jpeg",
+    "name": "The Red Armchair",
+    "description": ""
+  },
+  {
+    "id": 19,
+    "file": "19.jpeg",
+    "name": "Improvisation No.30",
+    "description": "Kandinsky"
+  },
+  {
+    "id": 20,
+    "file": "20.jpeg",
+    "name": "The Herring Net",
+    "description": "Homer"
+  },
+  {
+    "id": 21,
+    "file": "21.jpeg",
+    "name": "E-10",
+    "description": "Throne"
+  },
+  {
+    "id": 22,
+    "file": "22.jpeg",
+    "name": "Into the World there Came a Soul Called Ida",
+    "description": "Albright"
+  },
+  {
+    "id": 23,
+    "file": "23.jpeg",
+    "name": "Saint John on Parmos",
+    "description": "Poussin"
+  },
+  {
+    "id": 24,
+    "file": "24.jpeg",
+    "name": "A Young Lady with a Parrot",
+    "description": "Carriera"
+  },
+  {
+    "id": 25,
+    "file": "25.jpeg",
+    "name": "The Earth Is a Man",
+    "description": "Matta"
+  }
+]

@@ -1,6 +1,5 @@
 import { DeployFunction } from "hardhat-deploy/types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
-import fs from "fs";
 import { isDevelopementChain, sleep } from "../util";
 
 const deployCollectible: DeployFunction = async ({
@@ -13,16 +12,12 @@ const deployCollectible: DeployFunction = async ({
   const { deploy, log } = deployments;
   const { deployer } = await getNamedAccounts();
   const chainId = await getChainId();
-  const baseURI = await fs.promises.readFile(
-    "./metadata/open-art/baseURI.txt",
-    "utf8"
-  );
 
   log("Deploying contract from: ", deployer);
 
-  const collectible = await deploy("Collectible", {
+  const collectible = await deploy("CollectibleERC721URIStorage", {
     from: deployer,
-    args: [baseURI, 25],
+    args: [25],
     log: true,
     waitConfirmations: isDevelopementChain(chainId) ? 1 : 5,
   });
@@ -40,7 +35,7 @@ const deployCollectible: DeployFunction = async ({
     try {
       await run("verify:verify", {
         address: collectible.address,
-        constructorArguments: [baseURI],
+        constructorArguments: [],
         network: network.name,
       });
     } catch (error: any) {
@@ -54,4 +49,4 @@ const deployCollectible: DeployFunction = async ({
 };
 
 export default deployCollectible;
-deployCollectible.tags = ["all", "erc721"];
+deployCollectible.tags = ["all", "erc721storage"];

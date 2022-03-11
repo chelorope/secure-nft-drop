@@ -2,21 +2,18 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 import "hardhat/console.sol";
 
-contract Collectible is ERC721, AccessControl {
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+import "erc721a/contracts/ERC721A.sol";
 
-    uint256 public totalSupply;
+contract CollectibleERC721A is ERC721A, AccessControl {
+    string private _baseURIValue = "";
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     uint256 public maxSupply;
 
-    string private _baseURIValue = "";
-
     constructor(string memory baseURI, uint256 maxTokens)
-        ERC721("Open Art", "OPART")
+        ERC721A("Open Art", "OPART")
     {
         _baseURIValue = baseURI;
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -27,7 +24,7 @@ contract Collectible is ERC721, AccessControl {
         public
         view
         virtual
-        override(ERC721, AccessControl)
+        override(ERC721A, AccessControl)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
@@ -41,18 +38,12 @@ contract Collectible is ERC721, AccessControl {
         _baseURIValue = baseURI;
     }
 
-    function mint(uint256 quantity) public onlyRole(MINTER_ROLE) {
+    function mint(uint256 quantity) external payable onlyRole(MINTER_ROLE) {
         require(
-            totalSupply + quantity <= maxSupply,
+            totalSupply() + quantity <= maxSupply,
             "Purchase would exceed max supply"
         );
 
-        for (uint256 i = 0; i < quantity; i++) {
-            uint256 tokenId = totalSupply;
-            if (totalSupply < maxSupply) {
-                _safeMint(msg.sender, tokenId);
-                totalSupply = totalSupply + 1;
-            }
-        }
+        _safeMint(msg.sender, quantity);
     }
 }

@@ -1,19 +1,19 @@
 import { expect } from "chai";
 import { ethers, deployments, getNamedAccounts } from "hardhat";
 import fs from "fs";
-import { Collectible } from "../typechain/Collectible";
+import { CollectibleERC721URIStorage } from "../typechain/CollectibleERC721URIStorage";
 
 describe("Collectible", function () {
-  let collectible: Collectible;
+  let collectible: CollectibleERC721URIStorage;
   let deployer: string;
 
   beforeEach(async () => {
-    await deployments.fixture(["collectible"]);
-    const Collectible = await deployments.get("Collectible");
-    collectible = await ethers.getContractAt(
-      "Collectible",
+    await deployments.fixture(["erc721storage"]);
+    const Collectible = await deployments.get("CollectibleERC721URIStorage");
+    collectible = (await ethers.getContractAt(
+      "CollectibleERC721URIStorage",
       Collectible.address
-    );
+    )) as CollectibleERC721URIStorage;
     deployer = (await getNamedAccounts()).deployer;
   });
 
@@ -25,7 +25,10 @@ describe("Collectible", function () {
 
   it("Total supply should inrease after minting tokens", async function () {
     const metadata = JSON.parse(
-      await fs.promises.readFile("./metadata/metadata-manifest.json", "utf8")
+      await fs.promises.readFile(
+        "./metadata/open-art/metadata-manifest.json",
+        "utf8"
+      )
     );
 
     // Assigns Minter role to deployer address
