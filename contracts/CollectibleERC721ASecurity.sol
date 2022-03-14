@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "hardhat/console.sol";
+// import "hardhat/console.sol";
 
 import "erc721a/contracts/ERC721A.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
@@ -11,14 +11,14 @@ contract CollectibleERC721ASecurity is ERC721A {
 
     uint256 public constant MAX_SUPPLY = 25;
     uint256 public constant TOKEN_PRICE = 0.00002 ether;
+    address private constant _SIGNER =
+        0xB10eFf9454bd358FbFdb1AF033a20768e9247cB6;
 
     string private _baseURIValue;
     mapping(string => bool) private _usedNonces;
-    address private _signerAddress;
 
     constructor(string memory baseURI) ERC721A("Open Art", "OPART") {
         _baseURIValue = baseURI;
-        _signerAddress = msg.sender;
     }
 
     function supportsInterface(bytes4 interfaceId)
@@ -45,8 +45,6 @@ contract CollectibleERC721ASecurity is ERC721A {
         string memory nonce,
         uint256 quantity
     ) external payable {
-        console.log("Transaction Hash");
-        console.logBytes32(hashTransaction(msg.sender, quantity, nonce));
         require(
             totalSupply() + quantity <= MAX_SUPPLY,
             "Purchase would exceed max supply"
@@ -72,7 +70,7 @@ contract CollectibleERC721ASecurity is ERC721A {
         view
         returns (bool)
     {
-        return _signerAddress == hash.recover(signature);
+        return _SIGNER == hash.recover(signature);
     }
 
     function hashTransaction(
@@ -80,7 +78,12 @@ contract CollectibleERC721ASecurity is ERC721A {
         uint256 quantity,
         string memory nonce
     ) private pure returns (bytes32) {
-        bytes32 hash = keccak256(abi.encodePacked(sender, quantity, nonce));
+        bytes32 hash = keccak256(
+            abi.encodePacked(
+                "\x19Ethereum Signed Message:\n32",
+                keccak256(abi.encodePacked(sender, quantity, nonce))
+            )
+        );
 
         return hash;
     }
