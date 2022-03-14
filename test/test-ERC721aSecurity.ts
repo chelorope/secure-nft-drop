@@ -24,7 +24,7 @@ describe("CollectibleERC721ASecurity", function () {
   });
 
   it("Total supply should inrease after minting tokens", async function () {
-    const MINT_AMMOUNT = 3;
+    const MINT_AMMOUNT = 2;
 
     const response = (
       await axios.get(
@@ -33,8 +33,6 @@ describe("CollectibleERC721ASecurity", function () {
     ).data;
 
     console.log("RESPONSE: ", response);
-    console.log("VALUE:", ethers.utils.parseEther("0.002"));
-    console.log("DEPLOYER:", deployer);
     const creationTx = await collectible.mint(
       response.hash,
       response.signature,
