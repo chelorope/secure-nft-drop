@@ -28,7 +28,7 @@ describe("CollectibleERC721ASecurity", function () {
 
     const response = (
       await axios.get(
-        `https://dev.nft-drop.jam3.cloud.jam3.net/api/mint-signature?quantity=${MINT_AMMOUNT}&address=${deployer}`
+        `https://dev.nft-drop.jam3.cloud.jam3.net/api/mint-signature?quantity=${MINT_AMMOUNT}&address=${deployer}&recaptcha=tEs7Cap!?`
       )
     ).data;
 
