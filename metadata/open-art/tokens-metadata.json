@@ -1,5 +1,11 @@
 [
   {
+    "id": 0,
+    "file": "0.jpeg",
+    "name": "Nighthawks",
+    "description": "Hopper"
+  },
+  {
     "id": 1,
     "file": "1.jpeg",
     "name": "Starry Night",

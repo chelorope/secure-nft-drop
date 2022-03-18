@@ -1,6 +1,5 @@
 import { DeployFunction } from "hardhat-deploy/types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
-import fs from "fs";
 import { isDevelopementChain, verifyContract } from "../util";
 
 const deployCollectible: DeployFunction = async ({
@@ -12,31 +11,23 @@ const deployCollectible: DeployFunction = async ({
   const { deploy, log } = deployments;
   const { deployer } = await getNamedAccounts();
   const chainId = await getChainId();
+  const contract = await deployments.get("CollectibleERC721ASecurity");
 
   log("Deploying contract from: ", deployer);
 
-  const baseURI = await fs.promises.readFile(
-    "./metadata/open-art/baseURI.txt",
-    "utf8"
-  );
-
-  const collectible = await deploy("CollectibleERC721ASecurity", {
+  const proxyContract = await deploy("TransparentUpgradeableProxy", {
     from: deployer,
-    args: [baseURI],
+    args: [contract.address, deployer, []],
     log: true,
-    // proxy: {
-    //   owner: deployer,
-    //   proxyContract: "OpenZeppelinTransparentProxy",
-    // },
     waitConfirmations: isDevelopementChain(chainId) ? 1 : 5,
   });
 
-  log("Contract deployed on address:", collectible.address);
+  log("Contract deployed on address:", proxyContract.address);
 
   await verifyContract(
     {
-      address: collectible.address,
-      constructorArguments: [baseURI],
+      address: proxyContract.address,
+      constructorArguments: [],
       chainId,
     },
     run
@@ -45,4 +36,4 @@ const deployCollectible: DeployFunction = async ({
 };
 
 export default deployCollectible;
-deployCollectible.tags = ["all", "erc721a-security"];
+deployCollectible.tags = ["all", "upgradeable-proxy"];

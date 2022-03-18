@@ -10,14 +10,14 @@ contract CollectibleERC721ASecurity is ERC721A {
     using ECDSA for bytes32;
 
     uint256 public constant MAX_SUPPLY = 25;
-    uint256 public constant MAX_TOKENS_PER_ADDRESS = 2;
+    uint256 public constant MAX_TOKENS_PER_ADDRESS = 5;
     uint256 public constant TOKEN_PRICE = 0.00002 ether;
     address private constant _SIGNER =
         0xB10eFf9454bd358FbFdb1AF033a20768e9247cB6;
 
     string private _baseURIValue;
     mapping(string => bool) private _usedNonces;
-    mapping(address => uint256) private _addressToTokenQuantity;
+    mapping(address => uint256) public addressToMintedQuantity;
 
     constructor(string memory baseURI) ERC721A("Open Art", "OPART") {
         _baseURIValue = baseURI;
@@ -49,10 +49,10 @@ contract CollectibleERC721ASecurity is ERC721A {
     ) external payable {
         require(
             totalSupply() + quantity <= MAX_SUPPLY,
-            "Purchase would exceed max supply"
+            "Purchase would exceed max supply / test change"
         );
         require(
-            _addressToTokenQuantity[msg.sender] + quantity <=
+            addressToMintedQuantity[msg.sender] + quantity <=
                 MAX_TOKENS_PER_ADDRESS,
             "Max tokens reached for this address"
         );
@@ -68,15 +68,15 @@ contract CollectibleERC721ASecurity is ERC721A {
         require(matchAddresSigner(hash, signature), "Direct mint disallowed");
 
         _safeMint(msg.sender, quantity);
-        _addressToTokenQuantity[msg.sender] =
-            _addressToTokenQuantity[msg.sender] +
+        addressToMintedQuantity[msg.sender] =
+            addressToMintedQuantity[msg.sender] +
             quantity;
         _usedNonces[nonce] = true;
     }
 
     function matchAddresSigner(bytes32 hash, bytes memory signature)
         private
-        view
+        pure
         returns (bool)
     {
         return _SIGNER == hash.recover(signature);

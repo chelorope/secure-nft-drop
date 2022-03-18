@@ -1,3 +1,4 @@
+import { verifyContract } from "./../util";
 import { DeployFunction } from "hardhat-deploy/types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import fs from "fs";
@@ -8,7 +9,6 @@ const deployCollectible: DeployFunction = async ({
   deployments,
   getChainId,
   run,
-  network,
 }: HardhatRuntimeEnvironment) => {
   const { deploy, log } = deployments;
   const { deployer } = await getNamedAccounts();
@@ -30,27 +30,14 @@ const deployCollectible: DeployFunction = async ({
 
   log("Contract deployed on address:", collectible.address);
 
-  if (!isDevelopementChain(chainId)) {
-    log(
-      `https://${
-        network.name !== "mainnet" ? network.name : ""
-      }.etherscan.io/address/${collectible.address}`
-    );
-    log("Verifying contract....");
-    await sleep(10); // Wait for etherscan to list the contract
-    try {
-      await run("verify:verify", {
-        address: collectible.address,
-        constructorArguments: [baseURI, 25],
-        network: network.name,
-      });
-    } catch (error: any) {
-      log(error.message);
-      log("The contract couldn't be verified yet");
-      log("You can try later, running:");
-      log(`npx hardhat verify-etherscan --network ${network.name}`);
-    }
-  }
+  await verifyContract(
+    {
+      address: collectible.address,
+      constructorArguments: [baseURI, 25],
+      chainId,
+    },
+    run
+  );
   log("----------------------------------------------------");
 };
 
