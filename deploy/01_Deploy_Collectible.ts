@@ -20,9 +20,11 @@ const deployCollectible: DeployFunction = async ({
 
   log("Deploying contract from: ", deployer);
 
+  const args = [baseURI, 25];
+
   const collectible = await deploy("Collectible", {
     from: deployer,
-    args: [baseURI, 25],
+    args,
     log: true,
     waitConfirmations: isDevelopementChain(chainId) ? 1 : 5,
   });
@@ -32,7 +34,7 @@ const deployCollectible: DeployFunction = async ({
   await verifyContract(
     {
       address: collectible.address,
-      constructorArguments: [baseURI, 25],
+      constructorArguments: args,
       chainId,
     },
     run

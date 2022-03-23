@@ -1,18 +1,19 @@
 import * as dotenv from "dotenv";
 
 import { HardhatUserConfig } from "hardhat/config";
+import "@openzeppelin/hardhat-upgrades";
 import "@nomiclabs/hardhat-etherscan";
-import "@nomiclabs/hardhat-waffle";
-import "@nomiclabs/hardhat-ethers";
-import "@typechain/hardhat";
-import "hardhat-deploy";
-import "hardhat-gas-reporter";
-import "solidity-coverage";
 import "@nomiclabs/hardhat-truffle5";
+import "@nomiclabs/hardhat-ethers";
+import "@nomiclabs/hardhat-waffle";
+import "hardhat-gas-reporter";
+import "@typechain/hardhat";
+import "solidity-coverage";
+import "hardhat-deploy";
 
+import "./tasks/balance";
 import "./tasks/accounts";
 import "./tasks/contracts";
-import "./tasks/balance";
 import "./tasks/verify-etherscan";
 import "./tasks/pin-tokens-metadata";
 import "./tasks/pin-tokens-metadata-folder";

@@ -21,9 +21,11 @@ const deployCollectible: DeployFunction = async ({
     "utf8"
   );
 
+  const args = [baseURI, 25];
+
   const collectible = await deploy("CollectibleERC721A", {
     from: deployer,
-    args: [baseURI, 25],
+    args,
     log: true,
     waitConfirmations: isDevelopementChain(chainId) ? 1 : 5,
   });
@@ -33,7 +35,7 @@ const deployCollectible: DeployFunction = async ({
   await verifyContract(
     {
       address: collectible.address,
-      constructorArguments: [baseURI, 25],
+      constructorArguments: args,
       chainId,
     },
     run

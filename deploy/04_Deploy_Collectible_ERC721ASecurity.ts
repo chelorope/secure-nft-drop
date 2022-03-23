@@ -20,9 +20,11 @@ const deployCollectible: DeployFunction = async ({
     "utf8"
   );
 
+  const args = [baseURI];
+
   const collectible = await deploy("CollectibleERC721ASecurity", {
     from: deployer,
-    args: [baseURI],
+    args,
     log: true,
     // proxy: {
     //   owner: deployer,
@@ -36,7 +38,7 @@ const deployCollectible: DeployFunction = async ({
   await verifyContract(
     {
       address: collectible.address,
-      constructorArguments: [baseURI],
+      constructorArguments: args,
       chainId,
     },
     run
