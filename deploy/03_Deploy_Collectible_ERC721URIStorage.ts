@@ -1,7 +1,7 @@
 import { verifyContract } from "./../util";
 import { DeployFunction } from "hardhat-deploy/types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { isDevelopementChain, sleep } from "../util";
+import { isDevelopementChain } from "../util";
 
 const deployCollectible: DeployFunction = async ({
   getNamedAccounts,

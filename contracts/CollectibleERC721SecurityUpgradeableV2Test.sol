@@ -8,7 +8,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 import "hardhat/console.sol";
 
-contract CollectibleERC721SecurityUpgradeable is
+contract CollectibleERC721SecurityUpgradeableV2Test is
     Initializable,
     ERC721Upgradeable,
     AccessControlUpgradeable,
@@ -16,7 +16,7 @@ contract CollectibleERC721SecurityUpgradeable is
 {
     using ECDSAUpgradeable for bytes32;
 
-    string public constant CONTRACT_VERSION = "V1";
+    string public constant CONTRACT_VERSION = "V2";
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     uint256 public constant MAX_SUPPLY = 25;
     uint256 public constant MAX_TOKENS_PER_ADDRESS = 5;

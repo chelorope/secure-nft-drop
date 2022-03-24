@@ -1,7 +1,7 @@
-import { DeployFunction } from "hardhat-deploy/types";
+import { DeployFunction, DeploymentSubmission } from "hardhat-deploy/types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import fs from "fs";
-import { verifyContract } from "../util";
+import { verifyContract, isDevelopementChain } from "../util";
 
 const deployCollectible: DeployFunction = async ({
   getNamedAccounts,
@@ -11,9 +11,10 @@ const deployCollectible: DeployFunction = async ({
   ethers,
   run,
 }: HardhatRuntimeEnvironment) => {
-  const { log } = deployments;
+  const { log, save } = deployments;
   const { deployer } = await getNamedAccounts();
   const chainId = await getChainId();
+  console.log(deployments);
 
   log("Deploying contract from: ", deployer);
 
@@ -32,18 +33,27 @@ const deployCollectible: DeployFunction = async ({
     initializer: "init",
     kind: "uups",
   });
-  // instance.deployTransaction.wait(5);
-  // log("Contract deployed on address:", instance.address);
+  await instance.deployed();
+  await instance.deployTransaction.wait(isDevelopementChain(chainId) ? 1 : 5);
+  console.log("FACTORY: ", ERC721SecurityUpgradeable);
+  console.log("CONTRACT: ", instance);
 
-  // await verifyContract(
-  //   {
-  //     address: instance.address,
-  //     constructorArguments: args,
-  //     chainId,
-  //   },
-  //   run
-  // );
-  // log("----------------------------------------------------");
+  save("CollectibleERC721SecurityUpgradeable", {
+    // eslint-disable-next-line node/no-unsupported-features/es-syntax
+    ...instance,
+    abi: JSON.parse(instance.interface.format("json") as string),
+  } as DeploymentSubmission);
+  console.log("Contract deployed on address:", instance.address);
+
+  await verifyContract(
+    {
+      address: instance.address,
+      constructorArguments: args,
+      chainId,
+    },
+    run
+  );
+  log("----------------------------------------------------");
 };
 
 export default deployCollectible;

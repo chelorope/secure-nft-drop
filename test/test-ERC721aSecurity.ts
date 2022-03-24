@@ -18,7 +18,6 @@ describe("CollectibleERC721ASecurity", function () {
   });
 
   it("Total supply should be 0", async function () {
-    console.log("Creating token...");
     const totalSupply = (await collectible.totalSupply()).toNumber();
     expect(totalSupply).equal(0);
   });
@@ -32,7 +31,6 @@ describe("CollectibleERC721ASecurity", function () {
       )
     ).data;
 
-    console.log("RESPONSE: ", response);
     const creationTx = await collectible.mint(
       response.hash,
       response.signature,

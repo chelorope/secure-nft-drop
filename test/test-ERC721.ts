@@ -18,7 +18,6 @@ describe("Collectible", function () {
   });
 
   it("Total supply should be 0", async function () {
-    console.log("Creating token...");
     const totalSupply = (await collectible.totalSupply()).toNumber();
     expect(totalSupply).equal(0);
   });
