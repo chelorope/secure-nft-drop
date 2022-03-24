@@ -14,7 +14,6 @@ const deployCollectible: DeployFunction = async ({
   const { log, save } = deployments;
   const { deployer } = await getNamedAccounts();
   const chainId = await getChainId();
-  console.log(deployments);
 
   log("Deploying contract from: ", deployer);
 
@@ -35,8 +34,6 @@ const deployCollectible: DeployFunction = async ({
   });
   await instance.deployed();
   await instance.deployTransaction.wait(isDevelopementChain(chainId) ? 1 : 5);
-  console.log("FACTORY: ", ERC721SecurityUpgradeable);
-  console.log("CONTRACT: ", instance);
 
   save("CollectibleERC721SecurityUpgradeable", {
     // eslint-disable-next-line node/no-unsupported-features/es-syntax

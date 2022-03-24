@@ -6,6 +6,7 @@ import fs from "fs";
 
 describe("CollectibleERC721SecurityUpgradeable", function () {
   let collectible: CollectibleERC721SecurityUpgradeable;
+  let collectibleUpgraded: CollectibleERC721SecurityUpgradeable;
   let deployer: string;
   const MINT_AMMOUNT = 1;
 
@@ -64,21 +65,21 @@ describe("CollectibleERC721SecurityUpgradeable", function () {
       "CollectibleERC721SecurityUpgradeableV2Test"
     );
     // Reassigns contract to upgrade
-    collectible = (await upgrades.upgradeProxy(
+    collectibleUpgraded = (await upgrades.upgradeProxy(
       collectible.address,
       ERC721SecurityUpgradeable,
       {
         kind: "uups",
       }
     )) as CollectibleERC721SecurityUpgradeable;
-    collectible.deployed();
+    collectibleUpgraded.deployed();
 
-    const totalSupply = (await collectible.totalSupply()).toNumber();
+    const totalSupply = (await collectibleUpgraded.totalSupply()).toNumber();
     expect(totalSupply).equal(MINT_AMMOUNT);
   });
 
   it("Contract version should be V2 (Using proxy)", async function () {
-    const contractVersion = await collectible.CONTRACT_VERSION();
+    const contractVersion = await collectibleUpgraded.CONTRACT_VERSION();
     expect(contractVersion).equal("V2");
   });
 });
