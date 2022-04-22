@@ -26,16 +26,16 @@ npx hardhat verify-etherscan --network <network>
 
 ## Uploading NFTs metadata to IPFS
 
-1. Put the NFTs image files inside `./files` folder
+1. Put the NFTs image files inside `./files/[collection-name]` folder
 
-2. Update the file `./metadata/tokens-metadata.json` setting `id`, `file`, `name` and `description`
+2. Update the file `./metadata/[collection-name]/tokens-metadata.json` setting `id`, `file`, `name` and `description`
 
 3. Run:
    ```shell
-   npx hardhat pin-tokens-metadata
+   npx hardhat pin-tokens-metadata-folder
    ```
 
-A new file will be generated (`./metadata/metadata-manifest.json`) which can be used to mint new tokens
+A new file will be generated (`./metadata/[collection-name]/baseURI.txt`) which should be updated in the contract `_baseURI` function
 
 ## Minting
 
