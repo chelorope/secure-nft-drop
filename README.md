@@ -1,4 +1,4 @@
-# JAM3 LABS SMART CONTRACT NFT
+# Secure NFT Drop 
 
 ## Installation
 
